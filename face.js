@@ -1,4 +1,4 @@
-import {clamp} from './core.js';
+import {clamp} from './core.js?v=0.2.0';
 // Original pixel artwork drawn on a small grid. No image assets or copied character art.
 function block(ctx,x,y,w,h,color){ctx.fillStyle=color;ctx.fillRect(Math.round(x),Math.round(y),Math.max(1,Math.round(w)),Math.max(1,Math.round(h)));}
 function pixelOval(ctx,x,y,w,h,color){const cut=Math.max(1,Math.min(4,Math.floor(h/4)));block(ctx,x+cut,y,w-cut*2,h,color);block(ctx,x,y+cut,w,h-cut*2,color);if(cut>2){block(ctx,x+2,y+1,w-4,h-2,color);}}

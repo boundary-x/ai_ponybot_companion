@@ -1,4 +1,4 @@
-import {STOP} from './core.js';
+import {STOP} from './core.js?v=0.2.0';
 const SERVICE='6e400001-b5a3-f393-e0a9-e50e24dcca9e', RX='6e400003-b5a3-f393-e0a9-e50e24dcca9e';
 export class PonyBluetooth{
   constructor(onState,onSent){this.onState=onState;this.onSent=onSent;this.device=null;this.rx=null;this.pending=[];this.writing=false;this.connecting=false;this.epoch=0;}

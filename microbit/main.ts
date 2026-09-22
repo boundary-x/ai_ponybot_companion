@@ -42,10 +42,12 @@ function 명령확인 () {
 }
 
 function 모터움직이기 (번호: number, 속도: number) {
+    // Web speed is a percentage. Ponybot motor blocks use 0..255.
+    let 모터출력 = Math.round(Math.abs(속도) * 255 / 100)
     if (속도 >= 0) {
-        aiPonybot.runMotor(번호, aiPonybot.Direction.Clockwise, 속도)
+        aiPonybot.runMotor(번호, aiPonybot.Direction.Clockwise, 모터출력)
     } else {
-        aiPonybot.runMotor(번호, aiPonybot.Direction.CounterClockwise, 0 - 속도)
+        aiPonybot.runMotor(번호, aiPonybot.Direction.CounterClockwise, 모터출력)
     }
 }
 

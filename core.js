@@ -38,3 +38,18 @@ export function localPlan(kind,variant=0) {
 }
 export function keywordReaction(text){if(/잘\s?자|졸|쉬어|sleep/i.test(text))return 'sleep';if(/귀여|좋아|사랑|예뻐|고마|쓰다듬/i.test(text))return 'tickle';if(/놀라|깜짝/i.test(text))return 'surprise';if(/안녕|반가|hello|hi\b/i.test(text))return 'greet';return 'curious';}
 export function isStopRequest(text){return /멈춰|정지|그만|움직이지|stop\b/i.test(text);}
+
+export const DRIVE_LABELS={forward:'앞으로',backward:'뒤로',left:'왼쪽 회전',right:'오른쪽 회전'};
+export function driveIntent(text){
+  // Negation, questions, or multiple directions never become incidental drive commands.
+  if(isStopRequest(text)||/하지\s*마|가지\s*마|돌지\s*마|말고|않|금지|안\s*(가|움직|돌)|[?？]|뭐|어떻게|설명|가능|할\s*수|라는|라고|하면|면|까/.test(text))return null;
+  const matches=[['forward',/앞으로|전진|\bforward\b/i],['backward',/뒤로|후진|\bbackward\b/i],['left',/왼쪽(?:으로)?|좌회전|\bleft\b/i],['right',/오른쪽(?:으로)?|우회전|\bright\b/i]].filter(([,re])=>re.test(text));
+  if(matches.length!==1)return null;
+  const remaining=text.replace(/포니야|포니|로봇아|로봇|poni|pony|robot/gi,'').replace(matches[0][1],'').replace(/움직여\s*줘|움직여|이동해\s*줘|이동해|돌아\s*줘|돌아|가\s*줘|가자|가세요|가|해\s*줘|해주세요|하세요|해|조금|잠깐|한번|한\s*번|please|move|go|turn|[\s.!。！]/gi,'');
+  return remaining?null:matches[0][0];
+}
+export function drivePlan(direction){
+  const speed=45,vectors={forward:[1,1,1,1],backward:[-1,-1,-1,-1],left:[1,1,-1,-1],right:[-1,-1,1,1]};
+  if(!vectors[direction])throw Error('알 수 없는 방향');
+  return validatePlan({emotion:'happy',sound:'chirp',caption:DRIVE_LABELS[direction]+' · 0.4초 동작',intensity:.45,motions:[{motors:vectors[direction].map(n=>n*speed),ms:400}]});
+}
